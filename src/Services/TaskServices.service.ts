@@ -15,22 +15,27 @@ export class TaskService {
         @InjectRepository(Member) private memberRepository: Repository<Member>
     ) { }
 
-    async getAllTasks(memberId:number) {
-        const fetchedMember = await this.memberRepository.find({ relations: ['tasks'] });
-        // console.log(fetchedMember)
+    async getAllTasks(memberId: number) {
+        // const fetchedMember = await this.memberRepository.findOneBy({ id:memberId });
+        const fetchedMember = await this.memberRepository
+        .createQueryBuilder('Member')
+        .leftJoinAndSelect('Member.tasks', 'Task')
+        .where('Member.id=:id', { id: memberId })
+        .getOne();
+        // // console.log(fetchedMember)
 
-        return fetchedMember[0].tasks;   
+        return fetchedMember.tasks;
     }
 
     async createTask(memberId: number, taskDetails: CreateTaskDto) {
         const member = await this.memberRepository.findOneBy({ id: memberId })
         // console.log(member)
-        
-        const newTask = this.taskRepository.create({ ...taskDetails,assignee:member.name,member })
+
+        const newTask = this.taskRepository.create({ ...taskDetails, assignee: member.name, member })
 
         const createdTask = await this.taskRepository.save(newTask);
         // console.log(createdTask);
-        
+
         return createdTask;
     }
 

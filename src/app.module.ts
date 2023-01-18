@@ -18,7 +18,7 @@ import { Member } from './typeorm/entities/Member';
     username: 'root',
     password: 'MySql@1234',
     database: 'nest_typeorm_test',
-    entities: [Task,Team,Member],
+    entities: [Task, Team, Member],
     synchronize:true
   }), TaskModule,TeamModule],
   controllers: [AppController],
