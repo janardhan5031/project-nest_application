@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from '../typeorm/entities/Task';
 import { CreateTaskDto } from '../Utilities/CreateTaskDto.dto';
 import { Member } from 'src/typeorm/entities/Member';
+import { TaskStatusUpdate } from 'src/Utilities/TaskStatusUpdate.dto';
 
 @Injectable()
 export class TaskService {
@@ -37,6 +38,11 @@ export class TaskService {
         // console.log(createdTask);
 
         return createdTask;
+    }
+
+
+    async updateTaskStatus(taskId: number, status: TaskStatusUpdate) {
+        return await this.taskRepository.update(taskId,{ ...status })
     }
 
 }
