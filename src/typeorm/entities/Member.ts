@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne,OneToMany } from 'typeorm';
+import { Task } from './Task';
 
 import { Team } from './Team';
 
@@ -17,8 +18,10 @@ export class Member{
     number: number
     
     @ManyToOne(() => Team, (team) => team.members)
-    team:Team
-
+    team: Team
+    
+    @OneToMany(() => Task, (task) => task.member)
+    tasks:Task[]
 
 }
 

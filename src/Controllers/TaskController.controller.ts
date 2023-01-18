@@ -1,4 +1,4 @@
-import { Controller, Get, Post,Body } from '@nestjs/common';
+import { Controller, Get, Post,Body, Param, ParseIntPipe } from '@nestjs/common';
 
 import { TaskService } from '../Services/TaskServices.service';
 import { CreateTaskDto } from '../Utilities/CreateTaskDto.dto';
@@ -8,16 +8,21 @@ export class TasksController {
 
     constructor(private readonly taskService: TaskService) { }
     
-    @Get()
-    async getTasks() {
-        const tasks = await this.taskService.getAllTasks()
+    @Get('getAllTasks/:memberId')
+    async getTasks(
+        @Param('memberId', ParseIntPipe) memberId: number
+    ) {
+        const tasks = await this.taskService.getAllTasks(memberId)
         return tasks;
     }
     
 
-    @Post('addTask')
-    createTask(@Body() CreateTaskDto: CreateTaskDto) {
-        return this.taskService.createTask(CreateTaskDto)
+    @Post('addTask/:memberId')
+    createTask(
+        @Param('memberId', ParseIntPipe) memberId:number,
+        @Body() CreateTaskDto: CreateTaskDto
+    ) {
+        return this.taskService.createTask(memberId,CreateTaskDto)
     }
 
 

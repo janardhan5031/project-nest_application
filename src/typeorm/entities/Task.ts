@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column ,ManyToOne} from 'typeorm';
+import { Member } from './Member';
 
 @Entity({name:'tasks'})
 export class Task{
@@ -11,10 +12,12 @@ export class Task{
     @Column()
     due_date: string;
 
-    @Column()
+    @Column({default:''})
     assignee:string
 
     @Column({default:'on progress'})
-    status:string
-
+    status: string
+    
+    @ManyToOne(()=>Member, (member)=>member.tasks)
+    member:Member
 }
